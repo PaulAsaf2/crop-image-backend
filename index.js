@@ -23,12 +23,17 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // -------------------------------------
+app.get('/', (req, res) => {
+  res.send(req.query)
+  // res.send({message: 'Hello, "/" world!'})
+})
 app.get('/api', (req, res) => {
-  res.send({message: 'Hello, world!'})
+  res.send(req.query)
+  // res.send({message: 'Hello, "/api" world!'})
 })
 
 app.get('/api/get', (req, res) => {
-  res.send({message: 'Hello, get-code world!'})
+  res.send({message: 'Hello, "get" world!'})
 })
 
 app.post('/api/submit', upload.single('image'), (req, res) => {
