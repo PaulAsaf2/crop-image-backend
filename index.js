@@ -9,7 +9,7 @@ const app = express();
 const PORT = 3000;
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const dest = '/root/crop-image/uploads';
+    const dest = '/root/crop-image-backend/uploads';
     cb(null, dest);
   },
   filename: function (req, file, cb) {
@@ -31,7 +31,7 @@ app.get('/api/get', (req, res) => {
   res.send({message: 'Hello, get-code world!'})
 })
 
-app.post('/submit', upload.single('image'), (req, res) => {
+app.post('/api/submit', upload.single('image'), (req, res) => {
   try {
     const { filename } = req.file;
     const filepath = path.join(__dirname, `uploads/${filename}`);
