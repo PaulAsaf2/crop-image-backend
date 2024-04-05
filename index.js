@@ -4,7 +4,6 @@ const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-const { codeID } = require('./utils');
 // -------------------------------------
 const app = express();
 const PORT = 3000;
@@ -41,9 +40,12 @@ app.use((req, res, next) => {
 app.use('/api', express.static(path.join(__dirname, '../../var/www/crop-image-frontend')));
 // -------------------------------------
 app.get('/api/get-code', (req, res) => {
-  
-  // res.send({ message: 'World!' });
-})
+  fs.readFile('file.txt', 'utf8', (err, data) => {
+    if (err) res.status(404).send({message: 'File not found.'});
+
+    res.send({message: data});
+  });
+});
 // -------------------------------------
 app.post('/api/submit', upload.single('image'), (req, res) => {
   try {
@@ -51,7 +53,7 @@ app.post('/api/submit', upload.single('image'), (req, res) => {
     const filepath = path.join(__dirname, `uploads/${filename}`);
     const file = fs.readFile(filepath, (err, data) => {
       if (err) throw err;
-      res.status(200).send({ message: 'Upload succeed!' })
+      res.status(200).send({ message: req.file.filename })
     });
   } catch (err) {
     res.status(500).send({ message: 'Oops! Something went wrong!' })
