@@ -23,19 +23,19 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // -------------------------------------
-app.get('/', (req, res) => {
-  res.send(req.query)
-  // res.send({message: 'Hello, "/" world!'})
-})
+let codeID
+
 app.get('/api', (req, res) => {
-  res.send(req.query)
-  // res.send({message: 'Hello, "/api" world!'})
-})
+  const { code } = req.query;
+  codeID = code;
 
-app.get('/api/get', (req, res) => {
-  res.send({message: 'Hello, "get" world!'})
+  res.send(req.query);
 })
-
+// -------------------------------------
+app.get('/api/get-code', (req, res) => {
+  res.send({code: codeID});
+})
+// -------------------------------------
 app.post('/api/submit', upload.single('image'), (req, res) => {
   try {
     const { filename } = req.file;
