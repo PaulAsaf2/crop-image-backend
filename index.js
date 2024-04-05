@@ -4,6 +4,7 @@ const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+const { codeID } = require('./utils');
 // -------------------------------------
 const app = express();
 const PORT = 3000;
@@ -22,17 +23,26 @@ const upload = multer({ storage: storage });
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  const { code } = req.query;
+
+  if (code) {
+    fs.writeFile('file.txt', code, (err) => {
+      if (err) {
+        console.error('Error writing to file:', err);
+        return res.status(500).send('Error writing to file');
+      }
+      console.log('Value saved to file', code);
+    });
+  }
+
+  next();
+})
 app.use('/api', express.static(path.join(__dirname, '../../var/www/crop-image-frontend')));
 // -------------------------------------
-let codeID
-
-app.get('/api', (req, res) => {
-  const { code } = req.query;
-  codeID = code;
-})
-// -------------------------------------
 app.get('/api/get-code', (req, res) => {
-  res.send({message: codeID});
+  
+  // res.send({ message: 'World!' });
 })
 // -------------------------------------
 app.post('/api/submit', upload.single('image'), (req, res) => {
