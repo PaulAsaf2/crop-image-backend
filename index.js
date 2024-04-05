@@ -22,26 +22,17 @@ const upload = multer({ storage: storage });
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(express.static(path.join(__dirname, '../var/www/crop-image-frontend')));
+app.use('/api', express.static(path.join(__dirname, '../../var/www/crop-image-frontend')));
 // -------------------------------------
 let codeID
 
 app.get('/api', (req, res) => {
   const { code } = req.query;
   codeID = code;
-
-  res.send(
-  `<html>
-  <body>
-      <h1>req.query: ${codeID}</h1>
-  </body>
-  </html>`
-  )
-  // res.send(req.query);
 })
 // -------------------------------------
 app.get('/api/get-code', (req, res) => {
-  res.send({code: codeID});
+  res.send({message: codeID});
 })
 // -------------------------------------
 app.post('/api/submit', upload.single('image'), (req, res) => {
