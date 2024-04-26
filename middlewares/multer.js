@@ -1,7 +1,8 @@
+const { localDestinationPath, prodDestinationPath } = require('../constants');
 const multer = require('multer');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const dest = 'C:\\Users\\pavel\\repositories\\magnetto\\telegram-mini-app\\wallstring\\crop-image-divided\\backend\\uploads';
+    const dest = prodDestinationPath;
     cb(null, dest);
   },
   filename: function (req, file, cb) {
